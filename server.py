@@ -49,7 +49,8 @@ SMS_PATTERNS = [
     r"TxnID\s+([A-Z0-9]{8,20})",               # bKash
     r"transaction\s+ID\s+([A-Z0-9]{8,20})",     # bKash / Nagad
     r"Transaction\s+ID\s*[:\-]?\s*([A-Z0-9]{8,20})",  # Nagad
-    r"\bTID\s*[:\-]?\s*([A-Z0-9]{8,20})\b",    # generic
+    r"\bTID\s*[:\-]?\s*([A-Z0-9]{8,20})\b",
+    r"TrxID\s+([A-Za-z0-9]{6,20})",    # bKash received
 ]
 
 # Amount extraction (e.g. "Tk 150.00" or "BDT 200")
