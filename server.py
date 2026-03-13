@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from typing import Optional
-import re, os
+import re, os, httpx
 
 app = FastAPI(title="QuickPrint Payment Server")
 
@@ -238,3 +238,34 @@ async def list_transactions(x_admin_secret: Optional[str] = Header(None)):
             for k, v in transaction_store.items()
         }
     }
+
+
+@app.post("/api/telegram")
+async def telegram_webhook(request: Request):
+    data = await request.json()
+    try:
+        message_obj = data.get("message") or data.get("channel_post")
+        if not message_obj:
+            return {"ok": True, "note": "No message in update"}
+        chat_id = str(message_obj["chat"]["id"])
+        text = message_obj.get("text", "")
+        if chat_id != TELEGRAM_CHAT_ID:
+            return {"ok": True, "note": "Ignored — unknown chat"}
+        txn_id = extract_txn_id(text)
+        if not txn_id:
+            return {"ok": True, "txn_found": False}
+        amount = extract_amount(text)
+        method = detect_method("", text)
+        clean_expired()
+        transaction_store[txn_id] = {
+            "method": method, "amount": amount, "sender": "telegram",
+            "received_at": datetime.utcnow(), "used": False, "raw": text[:200],
+        }
+        async with httpx.AsyncClient() as client:
+            await client.post(
+                f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
+                json={"chat_id": TELEGRAM_CHAT_ID, "text": f"✅ TXN saved!\nID: {txn_id}\nAmount: {amount} TK\nMethod: {method}"}
+            )
+        return {"ok": True, "txn_found": True, "txn_id": txn_id}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
