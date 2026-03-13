@@ -202,7 +202,7 @@ async def verify_payment(payload: VerifyPayload):
     # Amount mismatch (optional — checks if SMS amount matches expected)
     if record["amount"]:
         sms_amount = float(record["amount"])
-        if abs(sms_amount - payload.amount) > 1:   # allow ±1 TK tolerance
+        if abs(sms_amount - payload.amount) > 0:   # allow ±1 TK tolerance
             return {
                 "verified": False,
                 "message":  f"Transaction found but amount doesn't match. Expected {payload.amount} TK, SMS shows {record['amount']} TK."
