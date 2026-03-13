@@ -269,3 +269,4 @@ async def telegram_webhook(request: Request):
         return {"ok": True, "txn_found": True, "txn_id": txn_id}
     except Exception as e:
         return {"ok": False, "error": str(e)}
+# last_update: Fri Mar 13 20:28:41 +06 2026
