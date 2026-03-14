@@ -200,6 +200,10 @@ main{
   transition:all 0.15s;
   -moz-appearance:textfield;
 }
+.copies-input::placeholder{
+  color:var(--text-3);
+  font-style:italic;
+}
 .copies-input::-webkit-outer-spin-button,.copies-input::-webkit-inner-spin-button{-webkit-appearance:none;}
 .copies-input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(244,124,32,0.12);}
 @keyframes hintPulse{
@@ -1268,9 +1272,14 @@ const observer = new IntersectionObserver((entries, obs) => {
 
       copiesInput.classList.add("hint");
 
+      // Desktop focus
+      if(!('ontouchstart' in window)){
+        copiesInput.focus({preventScroll:true});
+      }
+
+      // Mobile focus after first tap
       const enableFocus = () => {
-        copiesInput.focus({ preventScroll:true });
-        window.removeEventListener("touchstart", enableFocus);
+        copiesInput.focus({preventScroll:true});
       };
 
       window.addEventListener("touchstart", enableFocus, { once:true });
