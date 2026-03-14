@@ -1057,19 +1057,18 @@ function copyNumber(id){
 
   const num = document.getElementById(id).textContent;
 
-  if(navigator.clipboard){
-      navigator.clipboard.writeText(num).then(()=>{
-          showToast("Successfully copied!");
-      });
-  }else{
+  try{
       const temp = document.createElement("input");
       temp.value = num;
       document.body.appendChild(temp);
       temp.select();
       document.execCommand("copy");
       document.body.removeChild(temp);
-      showToast("Successfully copied!");
+  }catch(e){
+      console.log("Copy failed",e);
   }
+
+  showToast("Successfully copied!");
 }
 </script>
 
