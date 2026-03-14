@@ -1054,9 +1054,21 @@ function confirmPaperProceed(){
 }
 
 function copyNumber(id){
-  const num=document.getElementById(id).textContent;
-  navigator.clipboard.writeText(num);
-  showToast("Number copied: "+num);
+
+  const num = document.getElementById(id).textContent;
+
+  if(navigator.clipboard){
+      navigator.clipboard.writeText(num);
+  }else{
+      const temp = document.createElement("input");
+      temp.value = num;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      document.body.removeChild(temp);
+  }
+
+  showToast("Successfully copied!");
 }
 </script>
 
