@@ -185,7 +185,7 @@ main{
 .copies-num{font-size:26px;font-weight:800;color:var(--orange);}
 .copies-lbl{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;}
 .copies-input{
-  width:100px;
+  width:120px;
   flex-shrink:0;
   height:38px;
   border-radius:8px;
@@ -1260,14 +1260,22 @@ function copyNumber(id){
 }
 const copiesInput = document.getElementById("copiesInput");
 
-const observer = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver((entries, obs) => {
 
   entries.forEach(entry => {
 
     if(entry.isIntersecting){
 
-      copiesInput.focus({ preventScroll:true });
       copiesInput.classList.add("hint");
+
+      const enableFocus = () => {
+        copiesInput.focus({ preventScroll:true });
+        window.removeEventListener("touchstart", enableFocus);
+      };
+
+      window.addEventListener("touchstart", enableFocus, { once:true });
+
+      obs.disconnect();
 
     }
 
