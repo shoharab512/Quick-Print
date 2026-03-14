@@ -1058,7 +1058,9 @@ function copyNumber(id){
   const num = document.getElementById(id).textContent;
 
   if(navigator.clipboard){
-      navigator.clipboard.writeText(num);
+      navigator.clipboard.writeText(num).then(()=>{
+          showToast("Successfully copied!");
+      });
   }else{
       const temp = document.createElement("input");
       temp.value = num;
@@ -1066,9 +1068,8 @@ function copyNumber(id){
       temp.select();
       document.execCommand("copy");
       document.body.removeChild(temp);
+      showToast("Successfully copied!");
   }
-
-  showToast("Successfully copied!");
 }
 </script>
 
@@ -1104,7 +1105,7 @@ function copyNumber(id){
         </div>
        <div class="method-number">
   <span id="bkashNumber">01835836550</span>
-  <button class="copy-btn" onclick="copyNumber('bkashNumber')">Copy</button>
+  <button class="copy-btn" onclick="event.stopPropagation();copyNumber('bkashNumber')">Copy</button>
 </div>
         <div class="method-hint">Send Money / Payment</div>
         <div class="method-check"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
@@ -1118,7 +1119,7 @@ function copyNumber(id){
         </div>
         <div class="method-number">
   <span id="nagadNumber">01835836550</span>
-  <button class="copy-btn" onclick="copyNumber('nagadNumber')">Copy</button>
+ <button class="copy-btn" onclick="event.stopPropagation();copyNumber('nagadNumber')">Copy</button>
 </div>
         <div class="method-hint">Send Money / Payment</div>
         <div class="method-check"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
