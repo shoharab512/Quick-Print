@@ -489,6 +489,42 @@ main{
   }
 
 }
+/* MOBILE HEADER SIMPLIFY */
+@media (max-width:480px){
+
+  .header-links a:nth-child(3),
+  .header-links a:nth-child(4){
+    display:none;
+  }
+
+}
+/* MOBILE FOOTER */
+.mobile-footer{
+  display:none;
+}
+
+@media (max-width:480px){
+
+  .mobile-footer{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:18px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-2);
+  }
+
+  .mobile-footer-link{
+    text-decoration:none;
+    color:var(--text-2);
+  }
+
+  .mobile-footer-link:hover{
+    color:var(--orange);
+  }
+
+}
 </style>
 </head>
 <body>
