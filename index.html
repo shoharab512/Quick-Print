@@ -41,28 +41,38 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .page{
   width:100%;
   max-width:520px;
+  margin:auto;
+}
+
+@media (min-width:900px){
+  .page{
+    max-width:760px;
+  }
 }
 
 /* Laptop screens */
 @media (min-width:900px){
 
-  .page{
-    max-width:1200px;
-  }
-
   main{
-    display:grid;
-    grid-template-columns:1fr 1fr;
+    display:flex;
+    flex-direction:column;
     gap:14px;
   }
 
-  /* Full width cards */
-  .cost-card{
-    grid-column:1 / -1;
+  .upload-zone{
+    padding:40px 20px;
   }
 
-  .action-row{
-    grid-column:1 / -1;
+  .card{
+    border-radius:14px;
+  }
+
+  .cost-value{
+    font-size:52px;
+  }
+
+  .card-title{
+    font-size:14px;
   }
 
 }
@@ -95,19 +105,12 @@ main{
 @media (min-width:900px){
 
   main{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
   }
 
-  /* full width sections */
-  .cost-card{
-    grid-column:1 / -1;
-  }
-
-  .action-row{
-    grid-column:1 / -1;
-  }
+}
 
   /* bigger upload area */
   .upload-zone{
@@ -126,7 +129,7 @@ main{
     font-size:14px;
   }
 
-}
+
 
 /* CARD */
 .card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeUp 0.35s ease both;opacity:0;}
@@ -443,6 +446,47 @@ main{
 .copy-btn:hover{
   background:var(--orange);
   color:white;
+}
+/* LAPTOP UI SCALING */
+@media (min-width:900px){
+
+  .btn-pay{
+    padding:16px 26px;
+    font-size:16px;
+  }
+
+  .btn-clear{
+    padding:16px 20px;
+    font-size:15px;
+  }
+
+  .copies-btn{
+    width:44px;
+    height:44px;
+    font-size:24px;
+  }
+
+  .copies-input{
+    height:44px;
+    font-size:16px;
+    width:140px;
+  }
+
+  .upload-zone{
+    padding:40px 20px;
+  }
+
+  .cost-value{
+    font-size:54px;
+  }
+
+  /* sticky total cost */
+  .cost-card{
+    position:sticky;
+    bottom:10px;
+    z-index:5;
+  }
+
 }
 </style>
 </head>
