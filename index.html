@@ -939,7 +939,12 @@ async function verifyPayment(){
       })
     });
 
-    if (!res.ok) throw new Error('Server error: '+res.status);
+   if (!res.ok) {
+      let errMsg = 'Transaction not found or amount mismatch.';
+      try { const e = await res.json(); if (e.detail) errMsg = e.detail; } catch(e) {}
+      showVerifyStatus(false, errMsg);
+      return;
+    }
     const data = await res.json();
 
     if (data.verified) {
@@ -948,12 +953,7 @@ async function verifyPayment(){
       showVerifyStatus(false, data.message || 'Transaction not found. Please check your ID and try again.');
     }
   } catch(e) {
-    /* ── DEMO MODE ──────────────────────────────────────────
-       While your backend isn't ready, any valid-format TXN ID
-       will be accepted. Remove this catch block once your API is live.
-    ─────────────────────────────────────────────────────── */
-    console.warn('API not connected — running in demo mode:', e.message);
-    showConfirmation(txnId, totalCost, ready.length, totalPages);
+    showVerifyStatus(false, 'Could not connect to server. Please check your internet and try again.');
   } finally {
     btn.classList.remove('loading');
     btn.disabled = false;
