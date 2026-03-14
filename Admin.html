@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QuickPrint — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --orange:#F47C20;--orange-dark:#D96A10;--orange-light:#FFF0E5;--orange-mid:#FDDEC4;
+  --bg:#F5F6FA;--white:#FFFFFF;--text:#1A1D23;--text-2:#4B5260;--text-3:#9CA3AF;
+  --border:#E5E8EF;--green:#22C55E;--green-light:#F0FDF4;--red:#EF4444;--red-light:#FEF2F2;
+  --radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,0.08);
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.page{width:100%;max-width:600px;min-height:100vh;padding-bottom:40px;}
+header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:var(--shadow);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-text{font-size:16px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--orange);}
+.admin-badge{background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid #FECACA;}
+.tab-bar{display:flex;gap:0;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;}
+.tab{padding:12px 16px;border:none;background:transparent;font-family:var(--font);font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.section{padding:14px;display:none;}
+.section.active{display:block;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;}
+.card-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:13px;font-weight:700;color:var(--text);}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+.stat-value{font-size:28px;font-weight:800;color:var(--orange);}
+.stat-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;background:var(--bg);border-bottom:1px solid var(--border);}
+td{padding:10px 12px;font-size:12px;color:var(--text);border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.badge.green{background:var(--green-light);color:#15803D;}
+.badge.red{background:var(--red-light);color:#DC2626;}
+.badge.orange{background:var(--orange-light);color:var(--orange-dark);}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;}
+.field input{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;color:var(--text);outline:none;transition:all 0.15s;}
+.field input:focus{border-color:var(--orange);}
+.btn-full{width:100%;padding:12px;background:var(--orange);border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;}
+.btn-full:hover{background:var(--orange-dark);}
+.alert{padding:10px 12px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;margin-bottom:12px;display:none;}
+.alert.show{display:block;}
+.alert.error{background:var(--red-light);border:1px solid #FECACA;color:#DC2626;}
+.alert.success{background:var(--green-light);border:1px solid #BBF7D0;color:#15803D;}
+.mono{font-family:var(--mono);}
+.refresh-btn{font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--white);cursor:pointer;font-family:var(--font);color:var(--text-3);}
+.refresh-btn:hover{border-color:var(--orange);color:var(--orange);}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🖨️</div>
+      <span class="logo-text">Quick<span>Print</span> Admin</span>
+    </div>
+    <span class="admin-badge">ADMIN</span>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="tab" onclick="switchTab('users')">Users</button>
+    <button class="tab" onclick="switchTab('orders')">Orders</button>
+    <button class="tab" onclick="switchTab('credits')">Credits</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="section active" id="tab-dashboard">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value" id="statUsers">—</div><div class="stat-label">Users</div></div>
+      <div class="stat-card"><div class="stat-value" id="statOrders">—</div><div class="stat-label">Orders</div></div>
+      <div class="stat-card"><div class="stat-value" id="statTxns">—</div><div class="stat-label">Pending TXNs</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">➕ Add Credits to User</div></div>
+      <div style="padding:16px;">
+        <div id="adminAlert" class="alert"></div>
+        <div class="field"><label>Phone Number</label><input type="tel" id="adminPhone" placeholder="01XXXXXXXXX"/></div>
+        <div class="field"><label>Amount (TK)</label><input type="number" id="adminAmount" placeholder="e.g. 100" min="1"/></div>
+        <div class="field"><label>Note</label><input type="text" id="adminNote" placeholder="Manual top-up" value="Manual top-up"/></div>
+        <button class="btn-full" onclick="adminAddCredits()">Add Credits</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div class="section" id="tab-users">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">All Users</div>
+        <button class="refresh-btn" onclick="loadUsers()">↻ Refresh</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Credits</th><th>Joined</th></tr></thead>
+          <tbody id="usersTable"><tr><td colspan="4" style="text-align:center;color:var(--text-3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="section" id="tab-orders">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">All Orders</div>
+        <button class="refresh-btn" onclick="loadOrders()">↻ Refresh</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Pages</th><th>Date</th></tr></thead>
+          <tbody id="ordersTable"><tr><td colspan="5" style="text-align:center;color:var(--text-3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREDITS -->
+  <div class="section" id="tab-credits">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Credit Transactions</div>
+        <button class="refresh-btn" onclick="loadTransactions()">↻ Refresh</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>User</th><th>Type</th><th>Amount</th><th>Balance</th><th>Date</th></tr></thead>
+          <tbody id="txnsTable"><tr><td colspan="5" style="text-align:center;color:var(--text-3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://web-production-24422.up.railway.app';
+const ADMIN_SECRET = prompt('Enter admin secret:');
+if (!ADMIN_SECRET) window.location.href = 'quickprint2.html';
+const headers = {'x-admin-secret': ADMIN_SECRET, 'Content-Type': 'application/json'};
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'users') loadUsers();
+  if (tab === 'orders') loadOrders();
+  if (tab === 'credits') loadTransactions();
+}
+
+async function loadDashboard() {
+  try {
+    const [users, orders, txns] = await Promise.all([
+      fetch(API + '/api/admin/users', {headers}).then(r=>r.json()),
+      fetch(API + '/api/admin/orders', {headers}).then(r=>r.json()),
+      fetch(API + '/api/admin/txns', {headers}).then(r=>r.json()),
+    ]);
+    document.getElementById('statUsers').textContent = users.users?.length || 0;
+    document.getElementById('statOrders').textContent = orders.orders?.length || 0;
+    document.getElementById('statTxns').textContent = txns.count || 0;
+  } catch(e) { console.error(e); }
+}
+
+async function loadUsers() {
+  const res = await fetch(API + '/api/admin/users', {headers});
+  const data = await res.json();
+  const tbody = document.getElementById('usersTable');
+  if (!data.users?.length) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-3)">No users yet</td></tr>'; return; }
+  tbody.innerHTML = data.users.map(u => `
+    <tr>
+      <td>${u.name} ${u.is_admin?'<span class="badge orange">Admin</span>':''}</td>
+      <td class="mono">${u.phone}</td>
+      <td><span class="badge ${u.credits>0?'green':''}"><b>${u.credits}</b> TK</span></td>
+      <td class="mono" style="font-size:10px">${u.created_at?.substring(0,10)}</td>
+    </tr>`).join('');
+}
+
+async function loadOrders() {
+  const res = await fetch(API + '/api/admin/orders', {headers});
+  const data = await res.json();
+  const tbody = document.getElementById('ordersTable');
+  if (!data.orders?.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-3)">No orders yet</td></tr>'; return; }
+  tbody.innerHTML = data.orders.map(o => `
+    <tr>
+      <td class="mono" style="font-size:11px">${o.user_phone||'Guest'}</td>
+      <td><b>${o.amount}</b> TK</td>
+      <td><span class="badge orange">${o.paid_with||o.method}</span></td>
+      <td>${o.pages||'?'}p × ${o.copies||1}</td>
+      <td class="mono" style="font-size:10px">${o.created_at?.substring(0,10)}</td>
+    </tr>`).join('');
+}
+
+async function loadTransactions() {
+  const res = await fetch(API + '/api/admin/transactions', {headers});
+  const data = await res.json();
+  const tbody = document.getElementById('txnsTable');
+  if (!data.transactions?.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-3)">No transactions yet</td></tr>'; return; }
+  tbody.innerHTML = data.transactions.map(t => `
+    <tr>
+      <td class="mono" style="font-size:11px">${t.user_phone}</td>
+      <td><span class="badge ${t.type==='credit'?'green':'red'}">${t.type}</span></td>
+      <td class="mono"><b>${t.type==='credit'?'+':'-'}${t.amount}</b> TK</td>
+      <td class="mono">${t.balance_after} TK</td>
+      <td class="mono" style="font-size:10px">${t.created_at?.substring(0,10)}</td>
+    </tr>`).join('');
+}
+
+async function adminAddCredits() {
+  const phone = document.getElementById('adminPhone').value.trim();
+  const amount = parseFloat(document.getElementById('adminAmount').value);
+  const note = document.getElementById('adminNote').value.trim();
+  if (!phone || !amount) { showAdminAlert('Please fill phone and amount'); return; }
+  const res = await fetch(API + '/api/admin/credits/add', {
+    method: 'POST', headers,
+    body: JSON.stringify({phone, amount, note})
+  });
+  const data = await res.json();
+  if (!res.ok) { showAdminAlert(data.detail || 'Failed'); return; }
+  showAdminAlert(`✅ Added ${amount} TK to ${phone}. New balance: ${data.credits} TK`, 'success');
+  loadDashboard();
+}
+
+function showAdminAlert(msg, type='error') {
+  const el = document.getElementById('adminAlert');
+  el.textContent = msg; el.className = 'alert show ' + type;
+}
+
+loadDashboard();
+</script>
+</body>
+</html>

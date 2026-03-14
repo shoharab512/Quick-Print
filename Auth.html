@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QuickPrint — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --orange:#F47C20;--orange-dark:#D96A10;--orange-light:#FFF0E5;--orange-mid:#FDDEC4;
+  --bg:#F5F6FA;--white:#FFFFFF;--text:#1A1D23;--text-2:#4B5260;--text-3:#9CA3AF;
+  --border:#E5E8EF;--border-2:#D1D5DB;--green:#22C55E;--green-light:#F0FDF4;
+  --red:#EF4444;--red-light:#FEF2F2;--radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08);--shadow-lg:0 12px 40px rgba(0,0,0,0.14);
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.container{width:100%;max-width:420px;}
+.logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px;}
+.logo-icon{width:44px;height:44px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.logo-text{font-size:24px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--orange);}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:28px 24px;}
+.card-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.card-sub{font-size:13px;color:var(--text-3);margin-bottom:24px;}
+.tabs{display:flex;gap:0;background:var(--bg);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;}
+.tab{flex:1;padding:9px;border:none;background:transparent;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;transition:all 0.15s;}
+.tab.active{background:var(--white);color:var(--orange);box-shadow:var(--shadow);}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+.field input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:14px;color:var(--text);background:var(--white);outline:none;transition:all 0.15s;}
+.field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(244,124,32,0.1);}
+.field input.error{border-color:var(--red);}
+.btn{width:100%;padding:14px;background:var(--orange);border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all 0.15s;box-shadow:0 4px 14px rgba(244,124,32,0.35);display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+.btn:hover{background:var(--orange-dark);transform:translateY(-1px);}
+.btn:disabled{background:var(--border-2);box-shadow:none;cursor:not-allowed;transform:none;}
+.btn .spinner{width:16px;height:16px;border:2.5px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:none;}
+.btn.loading .spinner{display:block;}
+.btn.loading .btn-text{display:none;}
+.alert{padding:12px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;margin-bottom:16px;display:none;}
+.alert.show{display:block;}
+.alert.error{background:var(--red-light);border:1px solid #FECACA;color:#DC2626;}
+.alert.success{background:var(--green-light);border:1px solid #BBF7D0;color:#15803D;}
+.back-link{text-align:center;margin-top:20px;font-size:13px;color:var(--text-3);}
+.back-link a{color:var(--orange);font-weight:600;text-decoration:none;}
+.back-link a:hover{text-decoration:underline;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <div class="logo-icon">🖨️</div>
+    <span class="logo-text">Quick<span>Print</span></span>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Login</button>
+      <button class="tab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="tel" id="loginPhone" placeholder="01XXXXXXXXX" maxlength="11"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password"/>
+      </div>
+      <button class="btn" id="loginBtn" onclick="doLogin()">
+        <div class="spinner"></div>
+        <span class="btn-text">Login</span>
+      </button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none;">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Your name"/>
+      </div>
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="01XXXXXXXXX" maxlength="11"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="At least 6 characters"/>
+      </div>
+      <button class="btn" id="registerBtn" onclick="doRegister()">
+        <div class="spinner"></div>
+        <span class="btn-text">Create Account</span>
+      </button>
+    </div>
+  </div>
+  <div class="back-link"><a href="quickprint2.html">← Back to QuickPrint</a></div>
+</div>
+
+<script>
+const API = 'https://web-production-24422.up.railway.app';
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
+  document.getElementById('loginForm').style.display = tab==='login'?'block':'none';
+  document.getElementById('registerForm').style.display = tab==='register'?'block':'none';
+  hideAlert();
+}
+
+function showAlert(msg, type='error') {
+  const el = document.getElementById('alertBox');
+  el.textContent = msg;
+  el.className = 'alert show ' + type;
+}
+function hideAlert() {
+  document.getElementById('alertBox').className = 'alert';
+}
+
+async function doLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!phone || !password) { showAlert('Please fill in all fields'); return; }
+  const btn = document.getElementById('loginBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+  try {
+    const res = await fetch(API + '/api/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({phone, password})
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert(data.detail || 'Login failed'); return; }
+    localStorage.setItem('qp_token', data.token);
+    localStorage.setItem('qp_name', data.name);
+    localStorage.setItem('qp_phone', data.phone);
+    localStorage.setItem('qp_credits', data.credits);
+    localStorage.setItem('qp_is_admin', data.is_admin);
+    showAlert('Welcome back, ' + data.name + '! Redirecting...', 'success');
+    setTimeout(() => { window.location.href = data.is_admin ? 'admin.html' : 'quickprint2.html'; }, 1000);
+  } catch(e) {
+    showAlert('Could not connect to server. Try again.');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+}
+
+async function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const password = document.getElementById('regPassword').value;
+  if (!name || !phone || !password) { showAlert('Please fill in all fields'); return; }
+  if (password.length < 6) { showAlert('Password must be at least 6 characters'); return; }
+  const btn = document.getElementById('registerBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+  try {
+    const res = await fetch(API + '/api/register', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({phone, password, name})
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert(data.detail || 'Registration failed'); return; }
+    localStorage.setItem('qp_token', data.token);
+    localStorage.setItem('qp_name', data.name);
+    localStorage.setItem('qp_phone', data.phone);
+    localStorage.setItem('qp_credits', data.credits);
+    localStorage.setItem('qp_is_admin', false);
+    showAlert('Account created! Welcome, ' + data.name + '!', 'success');
+    setTimeout(() => { window.location.href = 'quickprint2.html'; }, 1000);
+  } catch(e) {
+    showAlert('Could not connect to server. Try again.');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const loginVisible = document.getElementById('loginForm').style.display !== 'none';
+    if (loginVisible) doLogin(); else doRegister();
+  }
+});
+
+// Auto-redirect if already logged in
+if (localStorage.getItem('qp_token')) {
+  window.location.href = 'quickprint2.html';
+}
+</script>
+</body>
+</html>

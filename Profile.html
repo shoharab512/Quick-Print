@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QuickPrint — My Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --orange:#F47C20;--orange-dark:#D96A10;--orange-light:#FFF0E5;--orange-mid:#FDDEC4;
+  --bg:#F5F6FA;--white:#FFFFFF;--text:#1A1D23;--text-2:#4B5260;--text-3:#9CA3AF;
+  --border:#E5E8EF;--border-2:#D1D5DB;--green:#22C55E;--green-light:#F0FDF4;
+  --red:#EF4444;--red-light:#FEF2F2;--blue:#3B82F6;--radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08);--shadow-lg:0 12px 40px rgba(0,0,0,0.14);
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.page{width:100%;max-width:520px;min-height:100vh;display:flex;flex-direction:column;padding-bottom:40px;}
+header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:var(--shadow);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-text{font-size:19px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--orange);}
+.btn-sm{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text-2);font-family:var(--font);transition:all 0.15s;}
+.btn-sm:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
+main{padding:14px;display:flex;flex-direction:column;gap:12px;}
+.credit-hero{background:linear-gradient(135deg,var(--orange),var(--orange-dark));border-radius:var(--radius);padding:24px 20px;color:#fff;box-shadow:0 8px 24px rgba(244,124,32,0.35);}
+.credit-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;opacity:0.8;margin-bottom:6px;}
+.credit-amount{font-size:52px;font-weight:800;letter-spacing:-0.03em;line-height:1;}
+.credit-unit{font-size:18px;font-weight:600;opacity:0.8;}
+.credit-phone{font-size:13px;opacity:0.75;margin-top:8px;font-family:var(--mono);}
+.credit-name{font-size:16px;font-weight:700;margin-top:4px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.card-header{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.card-title{font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.card-body{padding:16px;}
+.buy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.credit-pkg{border:2px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.credit-pkg:hover{border-color:var(--orange-mid);}
+.credit-pkg.selected{border-color:var(--orange);background:var(--orange-light);}
+.pkg-amount{font-size:20px;font-weight:800;color:var(--orange);}
+.pkg-label{font-size:10px;color:var(--text-3);margin-top:2px;}
+.custom-credit{margin-bottom:16px;}
+.custom-credit label{display:block;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+.input-row{display:flex;gap:8px;}
+.input-row input{flex:1;padding:10px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:var(--mono);font-size:14px;color:var(--text);outline:none;transition:all 0.15s;}
+.input-row input:focus{border-color:var(--orange);}
+.method-row{display:flex;gap:8px;margin-bottom:16px;}
+.method-btn{flex:1;padding:10px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s;background:var(--white);}
+.method-btn.selected{border-color:var(--orange);background:var(--orange-light);color:var(--orange);}
+.txn-input{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:all 0.15s;margin-bottom:12px;}
+.txn-input:focus{border-color:var(--orange);}
+.btn-full{width:100%;padding:13px;background:var(--orange);border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;box-shadow:0 4px 14px rgba(244,124,32,0.3);display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-full:hover{background:var(--orange-dark);}
+.btn-full:disabled{background:var(--border-2);box-shadow:none;cursor:not-allowed;}
+.btn-full .spinner{width:15px;height:15px;border:2.5px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:none;}
+.btn-full.loading .spinner{display:block;}
+.btn-full.loading .btn-text{display:none;}
+.alert{padding:10px 12px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;margin-bottom:12px;display:none;}
+.alert.show{display:block;}
+.alert.error{background:var(--red-light);border:1px solid #FECACA;color:#DC2626;}
+.alert.success{background:var(--green-light);border:1px solid #BBF7D0;color:#15803D;}
+.txn-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.txn-row:last-child{border-bottom:none;}
+.txn-left{display:flex;flex-direction:column;gap:2px;}
+.txn-desc{font-size:13px;font-weight:600;color:var(--text);}
+.txn-date{font-size:10px;color:var(--text-3);font-family:var(--mono);}
+.txn-amount{font-size:14px;font-weight:800;font-family:var(--mono);}
+.txn-amount.credit{color:var(--green);}
+.txn-amount.debit{color:var(--red);}
+.empty{text-align:center;padding:24px;color:var(--text-3);font-size:13px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🖨️</div>
+      <span class="logo-text">Quick<span>Print</span></span>
+    </div>
+    <button class="btn-sm" onclick="doLogout()">Logout</button>
+  </header>
+  <main>
+    <!-- CREDIT HERO -->
+    <div class="credit-hero">
+      <div class="credit-label">Available Credits</div>
+      <div class="credit-amount"><span id="heroCredits">0</span> <span class="credit-unit">TK</span></div>
+      <div class="credit-name" id="heroName">Loading...</div>
+      <div class="credit-phone" id="heroPhone"></div>
+    </div>
+
+    <!-- BUY CREDITS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">💳 Buy Credits</div>
+      </div>
+      <div class="card-body">
+        <div id="buyAlert" class="alert"></div>
+        <div class="buy-grid">
+          <div class="credit-pkg" onclick="selectPkg(50)"><div class="pkg-amount">50</div><div class="pkg-label">TK</div></div>
+          <div class="credit-pkg" onclick="selectPkg(100)"><div class="pkg-amount">100</div><div class="pkg-label">TK</div></div>
+          <div class="credit-pkg" onclick="selectPkg(200)"><div class="pkg-amount">200</div><div class="pkg-label">TK</div></div>
+          <div class="credit-pkg" onclick="selectPkg(500)"><div class="pkg-amount">500</div><div class="pkg-label">TK</div></div>
+          <div class="credit-pkg" onclick="selectPkg(1000)"><div class="pkg-amount">1000</div><div class="pkg-label">TK</div></div>
+          <div class="credit-pkg" id="customPkg" onclick="focusCustom()"><div class="pkg-amount">✏️</div><div class="pkg-label">Custom</div></div>
+        </div>
+        <div class="custom-credit">
+          <label>Or enter custom amount (TK)</label>
+          <div class="input-row">
+            <input type="number" id="creditAmount" placeholder="e.g. 150" min="10" oninput="onCustomAmount()"/>
+          </div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Payment Method</div>
+        <div class="method-row">
+          <button class="method-btn selected" id="btnBkash" onclick="selectMethod('bkash')">bKash<br><span style="font-size:10px;font-weight:500">01771-080238</span></button>
+          <button class="method-btn" id="btnNagad" onclick="selectMethod('nagad')">Nagad<br><span style="font-size:10px;font-weight:500">01771-080238</span></button>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Transaction ID from SMS</div>
+        <input type="text" class="txn-input" id="buyTxnId" placeholder="e.g. DCE33KXKHP"/>
+        <button class="btn-full" id="buyBtn" onclick="doBuyCredits()">
+          <div class="spinner"></div>
+          <span class="btn-text">Add Credits</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CREDIT HISTORY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📋 Credit History</div>
+      </div>
+      <div class="card-body" id="historyList">
+        <div class="empty">Loading...</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API = 'https://web-production-24422.up.railway.app';
+const token = localStorage.getItem('qp_token');
+let selectedMethod = 'bkash';
+let selectedAmount = null;
+
+if (!token) window.location.href = 'auth.html';
+
+async function loadProfile() {
+  try {
+    const res = await fetch(API + '/api/profile', { headers: {'x-token': token} });
+    if (!res.ok) { localStorage.clear(); window.location.href = 'auth.html'; return; }
+    const data = await res.json();
+    document.getElementById('heroCredits').textContent = data.credits.toFixed(2);
+    document.getElementById('heroName').textContent = data.name;
+    document.getElementById('heroPhone').textContent = data.phone;
+    localStorage.setItem('qp_credits', data.credits);
+    renderHistory(data.credit_history);
+  } catch(e) {
+    document.getElementById('heroName').textContent = localStorage.getItem('qp_name') || '';
+    document.getElementById('heroPhone').textContent = localStorage.getItem('qp_phone') || '';
+    document.getElementById('heroCredits').textContent = parseFloat(localStorage.getItem('qp_credits') || 0).toFixed(2);
+  }
+}
+
+function renderHistory(history) {
+  const el = document.getElementById('historyList');
+  if (!history || !history.length) { el.innerHTML = '<div class="empty">No transactions yet</div>'; return; }
+  el.innerHTML = history.map(h => `
+    <div class="txn-row">
+      <div class="txn-left">
+        <div class="txn-desc">${h.description || (h.type==='credit'?'Credit added':'Payment')}</div>
+        <div class="txn-date">${h.created_at} ${h.txn_id ? '· '+h.txn_id : ''}</div>
+      </div>
+      <div class="txn-amount ${h.type}">${h.type==='credit'?'+':'-'}${h.amount} TK</div>
+    </div>`).join('');
+}
+
+function selectPkg(amount) {
+  selectedAmount = amount;
+  document.getElementById('creditAmount').value = amount;
+  document.querySelectorAll('.credit-pkg').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('.credit-pkg')[([50,100,200,500,1000]).indexOf(amount)]?.classList.add('selected');
+}
+
+function focusCustom() {
+  document.querySelectorAll('.credit-pkg').forEach(p => p.classList.remove('selected'));
+  document.getElementById('customPkg').classList.add('selected');
+  document.getElementById('creditAmount').focus();
+}
+
+function onCustomAmount() {
+  selectedAmount = parseFloat(document.getElementById('creditAmount').value) || null;
+  document.querySelectorAll('.credit-pkg').forEach(p => p.classList.remove('selected'));
+  document.getElementById('customPkg').classList.add('selected');
+}
+
+function selectMethod(m) {
+  selectedMethod = m;
+  document.getElementById('btnBkash').classList.toggle('selected', m==='bkash');
+  document.getElementById('btnNagad').classList.toggle('selected', m==='nagad');
+}
+
+function showBuyAlert(msg, type='error') {
+  const el = document.getElementById('buyAlert');
+  el.textContent = msg; el.className = 'alert show ' + type;
+}
+
+async function doBuyCredits() {
+  const txnId = document.getElementById('buyTxnId').value.trim();
+  const amount = parseFloat(document.getElementById('creditAmount').value);
+  if (!txnId) { showBuyAlert('Please enter your transaction ID'); return; }
+  if (!amount || amount < 10) { showBuyAlert('Please enter a valid amount (min 10 TK)'); return; }
+  const btn = document.getElementById('buyBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+  try {
+    const res = await fetch(API + '/api/credits/buy', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ txnId, amount, method: selectedMethod, token })
+    });
+    const data = await res.json();
+    if (!res.ok) { showBuyAlert(data.detail || 'Failed to add credits'); return; }
+    showBuyAlert(`✅ ${amount} TK credits added! New balance: ${data.credits} TK`, 'success');
+    document.getElementById('heroCredits').textContent = data.credits.toFixed(2);
+    document.getElementById('buyTxnId').value = '';
+    document.getElementById('creditAmount').value = '';
+    selectedAmount = null;
+    document.querySelectorAll('.credit-pkg').forEach(p => p.classList.remove('selected'));
+    loadProfile();
+  } catch(e) {
+    showBuyAlert('Could not connect to server. Try again.');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+}
+
+async function doLogout() {
+  await fetch(API + '/api/logout', { method: 'POST', headers: {'x-token': token} });
+  localStorage.clear();
+  window.location.href = 'auth.html';
+}
+
+loadProfile();
+</script>
+</body>
+</html>
