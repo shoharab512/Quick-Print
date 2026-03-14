@@ -1258,15 +1258,24 @@ function copyNumber(id){
 
   showToast("Successfully copied!");
 }
-window.addEventListener("load", () => {
+const copiesInput = document.getElementById("copiesInput");
 
-  const input = document.getElementById("copiesInput");
+const observer = new IntersectionObserver((entries) => {
 
-  input.focus({ preventScroll:true });
+  entries.forEach(entry => {
 
-  input.classList.add("hint");
+    if(entry.isIntersecting){
 
-});
+      copiesInput.focus({ preventScroll:true });
+      copiesInput.classList.add("hint");
+
+    }
+
+  });
+
+},{ threshold:0.4 });
+
+observer.observe(copiesInput);
 </script>
 
 <!-- ── PAYMENT OVERLAY ─────────────────────────────────────── -->
