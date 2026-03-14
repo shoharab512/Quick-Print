@@ -141,7 +141,7 @@ async function doLogin() {
     localStorage.setItem('qp_credits', data.credits);
     localStorage.setItem('qp_is_admin', data.is_admin);
     showAlert('Welcome back, ' + data.name + '! Redirecting...', 'success');
-    setTimeout(() => { window.location.href = data.is_admin ? 'admin.html' : 'quickprint2.html'; }, 1000);
+    setTimeout(() => { window.location.href = data.is_admin ? 'Admin.html' : 'quickprint2.html'; }, 1000);
   } catch(e) {
     showAlert('Could not connect to server. Try again.');
   } finally {
