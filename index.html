@@ -340,7 +340,7 @@ main{
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── PAYMENT OVERLAY ───────────────────────────────────────── */
-.pay-overlay{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
+.pay-overlay{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
 .pay-overlay.open{transform:translateX(0);}
 
 .pay-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;box-shadow:var(--shadow);}
@@ -1333,21 +1333,33 @@ function confirmPaperProceed(){
 }
 
 function copyNumber(id){
-
   const num = document.getElementById(id).textContent;
 
-  try{
-      const temp = document.createElement("input");
-      temp.value = num;
-      document.body.appendChild(temp);
-      temp.select();
-      document.execCommand("copy");
-      document.body.removeChild(temp);
-  }catch(e){
-      console.log("Copy failed",e);
+  // Use modern Clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(num).then(() => {
+      showToast("✓ Number copied to clipboard!");
+    }).catch(err => {
+      fallbackCopy(num);
+    });
+  } else {
+    fallbackCopy(num);
   }
+}
 
-  showToast("Successfully copied!");
+// Keep this helper function below copyNumber
+function fallbackCopy(text) {
+  try {
+    const temp = document.createElement("input");
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+    showToast("✓ Number copied to clipboard!");
+  } catch(e) {
+    showToast("Copy failed. Please copy manually.", true);
+  }
 }
 const copiesInput = document.getElementById("copiesInput");
 
