@@ -861,7 +861,7 @@ function clearAll(){
   showToast('Cleared');
 }
 function changeCopies(delta){
-  copies=Math.min(99,Math.max(1,copies+delta));
+  copies=Math.min(999,Math.max(1,copies+delta));
   document.getElementById('copiesValue').textContent=copies;
   document.getElementById('copiesInput').value=copies;
   updateTotals();
