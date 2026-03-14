@@ -392,84 +392,8 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- PRINT MODE -->
-    <div class="card" style="animation-delay:0.15s;">
-      <div class="card-header">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        </div>
-        <span class="card-title">Print Mode</span>
-      </div>
-      <div class="card-body">
-        <div class="mode-grid">
-          <div class="mode-card active" id="modeBW" onclick="setMode('bw')">
-            <div class="mode-emoji">⬛</div>
-            <div class="mode-name">Black & White</div>
-            <div class="mode-price">Flat 2 TK / page</div>
-          </div>
-          <div class="mode-card" id="modeCOLOUR" onclick="setMode('colour')">
-            <div class="mode-emoji">🎨</div>
-            <div class="mode-name">Colour</div>
-            <div class="mode-price">3 – 12 TK / page</div>
-          </div>
-        </div>
-        <div class="colour-tiers" id="pricingRef">
-          <div class="colour-tiers-title">Colour pricing by page ink ratio</div>
-          <div class="colour-tier-row"><span class="tier-desc">≤10% colour (near B&W)</span><span class="tier-badge" style="background:#F1F5F9;color:#64748B;">3 TK</span></div>
-          <div class="colour-tier-row"><span class="tier-desc">≤30% colour (mild)</span><span class="tier-badge" style="background:#EFF6FF;color:#2563EB;">5 TK</span></div>
-          <div class="colour-tier-row"><span class="tier-desc">≤60% colour (moderate)</span><span class="tier-badge" style="background:#FFFBEB;color:#D97706;">8 TK</span></div>
-          <div class="colour-tier-row"><span class="tier-desc">&gt;60% colour (rich/photo)</span><span class="tier-badge" style="background:#FEF2F2;color:#DC2626;">12 TK</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAPER SIZE -->
-    <div class="card" style="animation-delay:0.175s;">
-      <div class="card-header">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        </div>
-        <span class="card-title">Paper Size</span>
-      </div>
-      <div class="card-body">
-        <div class="mode-grid">
-          <div class="mode-card active" id="paperA4" onclick="setPaper('a4')">
-            <div class="mode-emoji">📄</div>
-            <div class="mode-name">A4</div>
-            <div class="mode-price" id="paperA4price">B&amp;W 2 TK · Colour 3–12 TK</div>
-          </div>
-          <div class="mode-card" id="paperLegal" onclick="setPaper('legal')">
-            <div class="mode-emoji">📋</div>
-            <div class="mode-name">Legal</div>
-            <div class="mode-price">B&amp;W 4 TK · Colour 5 TK</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- COPIES -->
-    <div class="card" style="animation-delay:0.2s;">
-      <div class="card-header">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        </div>
-        <span class="card-title">Number of Copies</span>
-      </div>
-      <div class="card-body">
-        <div class="copies-control">
-          <button class="copies-btn" onclick="changeCopies(-1)">−</button>
-          <div class="copies-center">
-            <span class="copies-num" id="copiesValue">1</span>
-            <span class="copies-lbl">Copies</span>
-          </div>
-          <button class="copies-btn" onclick="changeCopies(1)">+</button>
-          <input type="number" id="copiesInput" class="copies-input" value="1" min="1" max="99" placeholder="No." oninput="setCopiesDirect(this.value)"/>
-        </div>
-      </div>
-    </div>
-
     <!-- UPLOAD -->
-    <div class="card" style="animation-delay:0.25s;">
+    <div class="card" style="animation-delay:0.1s;">
       <div class="card-header">
         <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -505,6 +429,84 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
         <div class="file-list" id="fileList"></div>
       </div>
     </div>
+
+    <!-- PRINT MODE -->
+    <div class="card" style="animation-delay:0.15s;">
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <span class="card-title">Print Mode</span>
+      </div>
+      <div class="card-body">
+        <div class="mode-grid">
+          <div class="mode-card active" id="modeBW" onclick="setMode('bw')">
+            <div class="mode-emoji">⬛</div>
+            <div class="mode-name">Black & White</div>
+            <div class="mode-price">Flat 2 TK / page</div>
+          </div>
+          <div class="mode-card" id="modeCOLOUR" onclick="setMode('colour')">
+            <div class="mode-emoji">🎨</div>
+            <div class="mode-name">Colour</div>
+            <div class="mode-price">3 – 12 TK / page</div>
+          </div>
+        </div>
+        <div class="colour-tiers" id="pricingRef">
+          <div class="colour-tiers-title">Colour pricing by page ink ratio</div>
+          <div class="colour-tier-row"><span class="tier-desc">≤10% colour (near B&W)</span><span class="tier-badge" style="background:#F1F5F9;color:#64748B;">3 TK</span></div>
+          <div class="colour-tier-row"><span class="tier-desc">≤30% colour (mild)</span><span class="tier-badge" style="background:#EFF6FF;color:#2563EB;">5 TK</span></div>
+          <div class="colour-tier-row"><span class="tier-desc">≤60% colour (moderate)</span><span class="tier-badge" style="background:#FFFBEB;color:#D97706;">8 TK</span></div>
+          <div class="colour-tier-row"><span class="tier-desc">&gt;60% colour (rich/photo)</span><span class="tier-badge" style="background:#FEF2F2;color:#DC2626;">12 TK</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAPER SIZE -->
+    <div class="card" style="animation-delay:0.2s;">
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <span class="card-title">Paper Size</span>
+      </div>
+      <div class="card-body">
+        <div class="mode-grid">
+          <div class="mode-card active" id="paperA4" onclick="setPaper('a4')">
+            <div class="mode-emoji">📄</div>
+            <div class="mode-name">A4</div>
+            <div class="mode-price" id="paperA4price">B&amp;W 2 TK · Colour 3–12 TK</div>
+          </div>
+          <div class="mode-card" id="paperLegal" onclick="setPaper('legal')">
+            <div class="mode-emoji">📋</div>
+            <div class="mode-name">Legal</div>
+            <div class="mode-price">B&amp;W 4 TK · Colour 5 TK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COPIES -->
+    <div class="card" style="animation-delay:0.25s;">
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </div>
+        <span class="card-title">Number of Copies</span>
+      </div>
+      <div class="card-body">
+        <div class="copies-control">
+          <button class="copies-btn" onclick="changeCopies(-1)">−</button>
+          <div class="copies-center">
+            <span class="copies-num" id="copiesValue">1</span>
+            <span class="copies-lbl">Copies</span>
+          </div>
+          <button class="copies-btn" onclick="changeCopies(1)">+</button>
+          <input type="number" id="copiesInput" class="copies-input" value="1" min="1" max="99" placeholder="No." oninput="setCopiesDirect(this.value)"/>
+        </div>
+      </div>
+    </div>
+
+    
 
     <!-- COST -->
     <div class="cost-card">
@@ -1034,7 +1036,31 @@ function showPaperConfirmation(){
     msg="Please check if there is legal paper in the printer. If there is A4 paper, remove it and put legal paper.";
   }
 
-  document.getElementById("paperConfirmText").textContent=msg;
+  document.getElementById("paperConfirmText").textContent = msg;
+
+  const ready = files.filter(f=>f.status==='ready');
+
+  const totalPages = ready.reduce((s,f)=>s+f.pages,0);
+
+  const totalCost = ready.reduce((s,f)=>s+f.cost,0) * copies;
+
+  document.getElementById("checkLocation").textContent =
+    document.getElementById("locationName").textContent;
+
+  document.getElementById("checkMode").textContent =
+    printMode === "bw" ? "Black & White" : "Colour";
+
+  document.getElementById("checkPaper").textContent =
+    paperSize === "a4" ? "A4" : "Legal";
+
+  document.getElementById("checkCopies").textContent = copies;
+
+  document.getElementById("checkFiles").textContent = ready.length;
+
+  document.getElementById("checkPages").textContent = totalPages;
+
+  document.getElementById("checkCost").textContent = totalCost + " TK";
+
   document.getElementById("paperConfirmOverlay").classList.add("open");
 }
 
@@ -1217,9 +1243,28 @@ function copyNumber(id){
 
     <div class="confirm-title">Printer Paper Check</div>
 
-    <div class="confirm-sub" id="paperConfirmText">
-      Please check paper in the printer.
-    </div>
+   <div class="confirm-sub" id="paperConfirmText">
+  Please check paper in the printer.
+</div>
+<div style="margin-top:15px;text-align:left;width:100%;">
+
+<div style="font-weight:700;margin-bottom:8px;">
+Are your requirements OK?
+</div>
+
+<div style="font-size:13px;color:var(--text-2);line-height:1.6;">
+• Location: <span id="checkLocation"></span><br>
+• Print Mode: <span id="checkMode"></span><br>
+• Paper Size: <span id="checkPaper"></span><br>
+• Copies: <span id="checkCopies"></span><br>
+• Files: <span id="checkFiles"></span><br>
+• Pages: <span id="checkPages"></span><br>
+• Total Cost: <span id="checkCost"></span>
+</div>
+
+</div>
+
+
 
     <button class="btn-done" onclick="confirmPaperProceed()">
       Confirm & Proceed to Payment
