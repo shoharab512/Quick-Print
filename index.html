@@ -868,7 +868,7 @@ function changeCopies(delta){
 }
 function setCopiesDirect(val){
   const n=parseInt(val);
-  if (!isNaN(n)&&n>=1&&n<=99){copies=n;document.getElementById('copiesValue').textContent=copies;updateTotals();}
+  if (!isNaN(n)&&n>=1&&n<=999){copies=n;document.getElementById('copiesValue').textContent=copies;updateTotals();}
 }
 /* ── PAYMENT CONFIG ─────────────────────────────────────────
    Replace these numbers with your actual merchant numbers.
