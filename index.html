@@ -1181,6 +1181,11 @@ function copyNumber(id){
 
   showToast("Successfully copied!");
 }
+window.addEventListener("load", () => {
+  const input = document.getElementById("copiesInput");
+  input.focus();
+  input.select(); 
+});
 </script>
 
 <!-- ── PAYMENT OVERLAY ─────────────────────────────────────── -->
