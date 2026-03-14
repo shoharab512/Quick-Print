@@ -354,7 +354,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
 
   <main>
 
-    <!-- COLLECT LATER -->
     <div class="card" style="animation-delay:0.05s;">
       <div class="collect-row" id="collectRow" onclick="toggleCollect()">
         <div class="toggle-track"><div class="toggle-thumb"></div></div>
@@ -365,7 +364,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- LOCATION -->
     <div class="card" style="animation-delay:0.1s;">
       <div class="card-header">
         <div class="card-icon">
@@ -385,7 +383,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- PRINT MODE -->
     <div class="card" style="animation-delay:0.15s;">
       <div class="card-header">
         <div class="card-icon">
@@ -416,7 +413,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- PAPER SIZE -->
     <div class="card" style="animation-delay:0.175s;">
       <div class="card-header">
         <div class="card-icon">
@@ -440,7 +436,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- COPIES -->
     <div class="card" style="animation-delay:0.2s;">
       <div class="card-header">
         <div class="card-icon">
@@ -461,7 +456,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- UPLOAD -->
     <div class="card" style="animation-delay:0.25s;">
       <div class="card-header">
         <div class="card-icon">
@@ -499,7 +493,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
 
-    <!-- COST -->
     <div class="cost-card">
       <div class="cost-top">
         <span class="cost-label">Total Estimated Cost</span>
@@ -511,7 +504,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       <div class="cost-breakdown" id="costBreakdown">Upload files to begin</div>
     </div>
 
-    <!-- ACTIONS -->
     <div class="action-row">
       <button class="btn-clear" onclick="clearAll()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
@@ -523,7 +515,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
       </button>
     </div>
 
-    <!-- WHATSAPP -->
     <div class="card" style="animation-delay:0.36s;">
       <div class="card-header">
         <div class="card-icon green">
@@ -556,7 +547,6 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
   </main>
 </div>
 
-<!-- LOCATION MODAL -->
 <div class="modal-overlay" id="locationModal" onclick="handleOverlayClick(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -589,11 +579,11 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 const FILE_TYPES = {
-  pdf:   { exts:['pdf'],                                              cat:'pdf',   label:'PDF',  cssClass:'pdf'   },
+  pdf:   { exts:['pdf'],                                            cat:'pdf',   label:'PDF',  cssClass:'pdf'   },
   image: { exts:['jpg','jpeg','png','webp','bmp','gif','tiff','tif'], cat:'img',   label:null,   cssClass:'img'   },
-  doc:   { exts:['doc','docx','odt','rtf'],                          cat:'doc',   label:null,   cssClass:'doc'   },
-  sheet: { exts:['xls','xlsx','ods','csv'],                          cat:'sheet', label:null,   cssClass:'sheet' },
-  slide: { exts:['ppt','pptx','odp'],                                cat:'slide', label:null,   cssClass:'slide' },
+  doc:   { exts:['doc','docx','odt','rtf'],                         cat:'doc',   label:null,   cssClass:'doc'   },
+  sheet: { exts:['xls','xlsx','ods','csv'],                         cat:'sheet', label:null,   cssClass:'sheet' },
+  slide: { exts:['ppt','pptx','odp'],                               cat:'slide', label:null,   cssClass:'slide' },
   text:  { exts:['txt'],                                             cat:'txt',   label:'TXT',  cssClass:'txt'   },
 };
 function getFileType(ext) {
@@ -624,7 +614,6 @@ function setPaper(size) {
   paperSize = size;
   document.getElementById('paperA4').classList.toggle('active',     size === 'a4');
   document.getElementById('paperLegal').classList.toggle('active',  size === 'legal');
-  // Update A4 subtitle to reflect current print mode context
   document.getElementById('paperA4price').textContent =
     'B\u0026W 2 TK \u00B7 COLOUR 3\u201312 TK';
   files.filter(f => f.status === 'ready').forEach(calcCost);
@@ -826,16 +815,11 @@ function setCopiesDirect(val){
   const n=parseInt(val);
   if (!isNaN(n)&&n>=1&&n<=99){copies=n;document.getElementById('copiesValue').textContent=copies;updateTotals();}
 }
-/* ── PAYMENT CONFIG ─────────────────────────────────────────
-   Replace these numbers with your actual merchant numbers.
-   The API endpoint should accept POST with JSON body:
-   { txnId, method, amount, files, pages, copies }
-   and return { verified: true/false, message: string }
-──────────────────────────────────────────────────────────── */
+
+/* ── PAYMENT CONFIG ───────────────────────────────────────── */
 const PAYMENT_CONFIG = {
   bkash:  { number: '01771-080238', label: 'bKash'  },
   nagad:  { number: '01771-080238', label: 'Nagad'  },
-  /* API endpoint — replace with your real backend URL */
   apiUrl: 'https://web-production-24422.up.railway.app/api/verify',
 };
 
@@ -880,7 +864,6 @@ function onTxnInput(){
   const input= document.getElementById('txnInput');
   const ok   = document.getElementById('txnIconOk');
   const err  = document.getElementById('txnIconErr');
-  // Basic format check: 8–20 alphanumeric chars
   const valid = /^[A-Za-z0-9]{8,20}$/.test(val);
   input.className = 'txn-input' + (val.length===0?'':(valid?' valid':' invalid'));
   ok.className  = 'txn-input-icon' + (valid&&val.length>0?' show':'');
@@ -899,6 +882,7 @@ function resetVerifyUI(){
   document.getElementById('btnVerify').classList.remove('loading');
 }
 
+/* ── FIXED VERIFY PAYMENT ───────────────────────────────── */
 async function verifyPayment(){
   const txnId = document.getElementById('txnInput').value.trim();
   if (!txnId){ showVerifyStatus(false,'Please enter your transaction ID'); return; }
@@ -908,21 +892,11 @@ async function verifyPayment(){
   const totalPages= ready.reduce((s,f)=>s+f.pages,0);
   const totalCost = ready.reduce((s,f)=>s+f.cost,0) * copies;
 
-  // Show loading state
   const btn = document.getElementById('btnVerify');
   btn.classList.add('loading');
   btn.disabled = true;
 
   try {
-    /* ── API CALL ────────────────────────────────────────────
-       POST to your backend with all order details.
-       Your backend should:
-         1. Look up txnId in bKash/Nagad transaction records
-         2. Confirm the amount matches totalCost
-         3. Mark the transaction as used (prevent reuse)
-         4. Return { verified: true, message: "Payment confirmed" }
-            or     { verified: false, message: "Transaction not found" }
-    ───────────────────────────────────────────────────────── */
     const res = await fetch(PAYMENT_CONFIG.apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -939,24 +913,23 @@ async function verifyPayment(){
       })
     });
 
-   if (!res.ok) {
-      let errMsg = 'Transaction not found or amount mismatch.';
-      try {
-        const errData = await res.json();
-        if (errData.detail) errMsg = errData.detail;
-      } catch(e) {}
-      showVerifyStatus(false, errMsg);
-      return;
+    if (!res.ok) {
+       const errData = await res.json();
+       throw new Error(errData.detail || 'Connection failed');
     }
+    
     const data = await res.json();
 
-    if (data.verified) {
+    // CRITICAL FIX: Only succeed if verified is true
+    if (data.verified === true) {
       showConfirmation(txnId, totalCost, ready.length, totalPages);
     } else {
-      showVerifyStatus(false, data.message || 'Transaction not found. Please check your ID and try again.');
+      showVerifyStatus(false, data.message || 'Transaction ID not verified. Please try again.');
     }
   } catch(e) {
-    showVerifyStatus(false, 'Could not connect to server. Please check your internet and try again.');
+    // CRITICAL FIX: Removed "Demo Mode" success trigger. Shows actual error now.
+    console.error('Verification Error:', e.message);
+    showVerifyStatus(false, 'Error: ' + e.message);
   } finally {
     btn.classList.remove('loading');
     btn.disabled = false;
@@ -1010,7 +983,6 @@ function showToast(msg,isError){
 }
 </script>
 
-<!-- ── PAYMENT OVERLAY ─────────────────────────────────────── -->
 <div class="pay-overlay" id="payOverlay">
   <div class="pay-header">
     <button class="pay-back" onclick="closePayment()">
@@ -1020,8 +992,6 @@ function showToast(msg,isError){
   </div>
 
   <div class="pay-body">
-
-    <!-- Order summary -->
     <div class="order-summary">
       <div class="order-summary-left">
         <span class="order-summary-label">Amount Due</span>
@@ -1030,7 +1000,6 @@ function showToast(msg,isError){
       <div class="order-amount"><span id="payAmount">0</span> <span>TK</span></div>
     </div>
 
-    <!-- Payment method -->
     <div class="method-label">Choose Payment Method</div>
     <div class="method-grid">
       <div class="method-card selected" id="methodBkash" onclick="selectMethod('bkash')">
@@ -1057,7 +1026,6 @@ function showToast(msg,isError){
       </div>
     </div>
 
-    <!-- Instructions -->
     <div class="pay-instructions">
       <div class="pay-inst-title">How to Pay</div>
       <div class="pay-steps">
@@ -1080,33 +1048,26 @@ function showToast(msg,isError){
       </div>
     </div>
 
-    <!-- TXN input -->
     <div class="txn-label">Transaction ID</div>
     <div class="txn-input-wrap">
       <input type="text" id="txnInput" class="txn-input" placeholder="e.g. 8K3B2A1C9F" autocomplete="off" spellcheck="false" oninput="onTxnInput()" />
-      <!-- valid icon -->
       <svg class="txn-input-icon" id="txnIconOk" viewBox="0 0 20 20" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"/><polyline points="6.5,10 9,12.5 13.5,7.5"/></svg>
-      <!-- invalid icon -->
       <svg class="txn-input-icon" id="txnIconErr" viewBox="0 0 20 20" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"/><line x1="7" y1="7" x2="13" y2="13"/><line x1="13" y1="7" x2="7" y2="13"/></svg>
     </div>
     <div class="txn-hint" id="txnHint">Enter the transaction ID exactly as shown in the SMS confirmation</div>
 
-    <!-- Status -->
     <div class="verify-status" id="verifyStatus">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="verifyStatusIcon"></svg>
       <span id="verifyStatusMsg"></span>
     </div>
 
-    <!-- Verify button -->
     <button class="btn-verify" id="btnVerify" onclick="verifyPayment()">
       <div class="spinner"></div>
       <span class="btn-verify-text">Verify Payment</span>
     </button>
-
   </div>
 </div>
 
-<!-- ── CONFIRMATION SCREEN ───────────────────────────────────── -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-card">
     <div class="confirm-tick">
