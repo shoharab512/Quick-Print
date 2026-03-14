@@ -33,6 +33,18 @@ SMS_PATTERNS = [
 
 AMOUNT_PATTERN = r"(?:Tk|BDT)\s*([\d,]+(?:\.\d+)?)"
 
+# --- MODELS (defined before routes) ---
+
+class VerifyPayload(BaseModel):
+    txnId:  str
+    method: str
+    amount: int
+
+class SMSPayload(BaseModel):
+    sender:  str
+    message: str
+    method:  Optional[str] = None
+
 # --- HELPERS ---
 
 def extract_txn_id(message: str) -> Optional[str]:
@@ -68,8 +80,15 @@ def store_txn(txn_id: str, amount, method: str, sender: str, raw: str):
         "raw":         raw[:200],
     }
 
+async def send_telegram(chat_id: str, text: str):
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
+            json={"chat_id": chat_id, "text": text}
+        )
+        print(f"DEBUG: Telegram Reply Status: {resp.status_code}")
+
 async def process_text(text: str, chat_id: str):
-    """Extract TXN from text, store it, and send Telegram reply."""
     print(f"DEBUG: Processing text: {text}")
 
     txn_id = extract_txn_id(text)
@@ -88,14 +107,6 @@ async def process_text(text: str, chat_id: str):
     await send_telegram(chat_id, f"✅ TXN saved!\nID: {txn_id}\nAmount: {amount or 'Unknown'} TK\nMethod: {method}")
     return {"ok": True, "txn_found": True, "txn_id": txn_id}
 
-async def send_telegram(chat_id: str, text: str):
-    async with httpx.AsyncClient() as client:
-        resp = await client.post(
-            f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
-            json={"chat_id": chat_id, "text": text}
-        )
-        print(f"DEBUG: Telegram Reply Status: {resp.status_code}")
-
 # --- ROUTES ---
 
 @app.get("/")
@@ -112,15 +123,12 @@ async def telegram_webhook(request: Request):
         if not message_obj:
             return {"ok": True, "note": "No message in update"}
 
-        # Handle SMS Forwarder: message is a raw string
         if isinstance(message_obj, str):
-            # Try to parse it as JSON string
             try:
                 message_obj = json.loads(message_obj)
                 text = message_obj.get("text", "")
                 chat_id = str(message_obj.get("chat", {}).get("id", TELEGRAM_CHAT_ID))
             except (json.JSONDecodeError, AttributeError):
-                # It's just a plain SMS text string
                 text = message_obj
                 chat_id = TELEGRAM_CHAT_ID
         else:
@@ -158,15 +166,3 @@ async def list_transactions(x_admin_secret: Optional[str] = Header(None)):
         raise HTTPException(status_code=401, detail="Unauthorized")
     clean_expired()
     return {"count": len(transaction_store), "transactions": transaction_store}
-
-# --- MODELS ---
-
-class VerifyPayload(BaseModel):
-    txnId:  str
-    method: str
-    amount: int
-
-class SMSPayload(BaseModel):
-    sender:  str
-    message: str
-    method:  Optional[str] = None
