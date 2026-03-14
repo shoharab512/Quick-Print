@@ -325,6 +325,22 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
 
 @keyframes spin{to{transform:rotate(360deg);}}
 @keyframes popIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.copy-btn{
+  border:none;
+  background:var(--orange-light);
+  color:var(--orange-dark);
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-left:6px;
+  font-weight:700;
+}
+
+.copy-btn:hover{
+  background:var(--orange);
+  color:white;
+}
 </style>
 </head>
 <body>
@@ -842,9 +858,18 @@ const PAYMENT_CONFIG = {
 let selectedMethod = 'bkash';
 
 function proceedPayment(){
-  if (files.some(f=>f.status==='analysing')){showToast('Please wait — still scanning',true);return;}
-  if (!files.length){showToast('Upload at least one file first',true);return;}
-  openPayment();
+
+  if (files.some(f=>f.status==='analysing')){
+    showToast('Please wait — still scanning',true);
+    return;
+  }
+
+  if (!files.length){
+    showToast('Upload at least one file first',true);
+    return;
+  }
+
+  showPaperConfirmation();
 }
 
 function openPayment(){
@@ -1005,6 +1030,34 @@ function showToast(msg,isError){
   t.className='toast'+(isError?' error':'')+' show';
   setTimeout(()=>t.classList.remove('show'),2800);
 }
+function showPaperConfirmation(){
+
+  let msg="";
+
+  if(paperSize==="a4"){
+    msg="Please check if there is A4 paper in the printer. If there is legal paper, remove it and put A4 paper.";
+  }else{
+    msg="Please check if there is legal paper in the printer. If there is A4 paper, remove it and put legal paper.";
+  }
+
+  document.getElementById("paperConfirmText").textContent=msg;
+  document.getElementById("paperConfirmOverlay").classList.add("open");
+}
+
+function closePaperConfirm(){
+  document.getElementById("paperConfirmOverlay").classList.remove("open");
+}
+
+function confirmPaperProceed(){
+  closePaperConfirm();
+  openPayment();
+}
+
+function copyNumber(id){
+  const num=document.getElementById(id).textContent;
+  navigator.clipboard.writeText(num);
+  showToast("Number copied: "+num);
+}
 </script>
 
 <!-- ── PAYMENT OVERLAY ─────────────────────────────────────── -->
@@ -1037,7 +1090,10 @@ function showToast(msg,isError){
             <text x="10" y="27" font-family="Arial" font-weight="800" font-size="18" fill="white">bKash</text>
           </svg>
         </div>
-        <div class="method-number" id="bkashNumber">01835836550</div>
+       <div class="method-number">
+  <span id="bkashNumber">01835836550</span>
+  <button class="copy-btn" onclick="copyNumber('bkashNumber')">Copy</button>
+</div>
         <div class="method-hint">Send Money / Payment</div>
         <div class="method-check"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
       </div>
@@ -1048,7 +1104,10 @@ function showToast(msg,isError){
             <text x="10" y="27" font-family="Arial" font-weight="800" font-size="18" fill="white">Nagad</text>
           </svg>
         </div>
-        <div class="method-number" id="nagadNumber">01835836550</div>
+        <div class="method-number">
+  <span id="nagadNumber">01835836550</span>
+  <button class="copy-btn" onclick="copyNumber('nagadNumber')">Copy</button>
+</div>
         <div class="method-hint">Send Money / Payment</div>
         <div class="method-check"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,5 4.5,8.5 11,1"/></svg></div>
       </div>
@@ -1144,6 +1203,26 @@ function showToast(msg,isError){
       <div class="confirm-location-text" id="confirmLocText">Zia Hall (Ground Floor)</div>
     </div>
     <button class="btn-done" onclick="resetAll()">Done — Start New Order</button>
+  </div>
+</div>
+<!-- PAPER CONFIRMATION -->
+<div class="confirm-overlay" id="paperConfirmOverlay">
+  <div class="confirm-card">
+
+    <div class="confirm-title">Printer Paper Check</div>
+
+    <div class="confirm-sub" id="paperConfirmText">
+      Please check paper in the printer.
+    </div>
+
+    <button class="btn-done" onclick="confirmPaperProceed()">
+      Confirm & Proceed to Payment
+    </button>
+
+    <button class="btn-clear" style="margin-top:10px;width:100%;" onclick="closePaperConfirm()">
+      Cancel
+    </button>
+
   </div>
 </div>
 
