@@ -1255,8 +1255,12 @@ function copyNumber(id){
 }
 window.addEventListener("load", () => {
   const input = document.getElementById("copiesInput");
-  input.focus();
-  input.select(); 
+
+  input.focus({ preventScroll: true });
+
+  setTimeout(()=>{
+    input.select();
+  },50);
 });
 </script>
 
