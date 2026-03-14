@@ -145,12 +145,12 @@ const token = localStorage.getItem('qp_token');
 let selectedMethod = 'bkash';
 let selectedAmount = null;
 
-if (!token) window.location.href = 'auth.html';
+if (!token) window.location.href = 'Auth.html';
 
 async function loadProfile() {
   try {
     const res = await fetch(API + '/api/profile', { headers: {'x-token': token} });
-    if (!res.ok) { localStorage.clear(); window.location.href = 'auth.html'; return; }
+    if (!res.ok) { localStorage.clear(); window.location.href = 'Auth.html'; return; }
     const data = await res.json();
     document.getElementById('heroCredits').textContent = data.credits.toFixed(2);
     document.getElementById('heroName').textContent = data.name;
@@ -239,7 +239,7 @@ async function doBuyCredits() {
 async function doLogout() {
   await fetch(API + '/api/logout', { method: 'POST', headers: {'x-token': token} });
   localStorage.clear();
-  window.location.href = 'auth.html';
+  window.location.href = 'Auth.html';
 }
 
 loadProfile();
