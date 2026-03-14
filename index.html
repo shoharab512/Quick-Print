@@ -370,19 +370,10 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
 
   <main>
 
-    <!-- COLLECT LATER -->
-    <div class="card" style="animation-delay:0.05s;">
-      <div class="collect-row" id="collectRow" onclick="toggleCollect()">
-        <div class="toggle-track"><div class="toggle-thumb"></div></div>
-        <div>
-          <div class="collect-title">Collect Later? <span style="color:var(--text-3);font-weight:400;font-size:13px;">(পরে নিবেন?)</span></div>
-          <div class="collect-sub">Tick if you'll pick up your printout later</div>
-        </div>
-      </div>
-    </div>
+    
 
     <!-- LOCATION -->
-    <div class="card" style="animation-delay:0.1s;">
+    <div class="card" style="animation-delay:0.05s;">
       <div class="card-header">
         <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -655,7 +646,7 @@ function setMode(mode) {
   files.filter(f=>f.status==='ready').forEach(calcCost);
   renderAll();
 }
-function toggleCollect() { document.getElementById('collectRow').classList.toggle('checked'); }
+
 
 document.getElementById('fileInput').addEventListener('change', e=>{
   Array.from(e.target.files).forEach(addFile); e.target.value='';
@@ -826,11 +817,14 @@ function updateTotals() {
 }
 
 function clearAll(){
-  files=[];copies=1;
+  files=[];
+  copies=1;
+
   document.getElementById('copiesValue').textContent='1';
   document.getElementById('copiesInput').value='1';
-  document.getElementById('collectRow').classList.remove('checked');
-  renderAll();showToast('Cleared');
+
+  renderAll();
+  showToast('Cleared');
 }
 function changeCopies(delta){
   copies=Math.min(99,Math.max(1,copies+delta));
