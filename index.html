@@ -206,6 +206,15 @@ main{
 }
 .copies-input::-webkit-outer-spin-button,.copies-input::-webkit-inner-spin-button{-webkit-appearance:none;}
 .copies-input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(244,124,32,0.12);}
+@keyframes hintPulse{
+  0%{box-shadow:0 0 0 0 rgba(244,124,32,0.4);}
+  70%{box-shadow:0 0 0 10px rgba(244,124,32,0);}
+  100%{box-shadow:0 0 0 0 rgba(244,124,32,0);}
+}
+
+.copies-input{
+  animation:hintPulse 1.2s ease 1;
+}
 
 /* UPLOAD */
 .upload-zone{border:2px dashed var(--border-2);border-radius:var(--radius-sm);padding:26px 20px;text-align:center;cursor:pointer;transition:border-color 0.15s,background 0.15s;background:var(--bg);user-select:none;}
@@ -1254,13 +1263,11 @@ function copyNumber(id){
   showToast("Successfully copied!");
 }
 window.addEventListener("load", () => {
+
   const input = document.getElementById("copiesInput");
 
   input.focus({ preventScroll: true });
 
-  setTimeout(()=>{
-    input.select();
-  },50);
 });
 </script>
 
