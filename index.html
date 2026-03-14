@@ -329,7 +329,7 @@ main{
 .modal-close:hover{background:var(--orange-dark);}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--text);color:#fff;padding:10px 18px;border-radius:30px;font-size:12px;font-weight:600;white-space:nowrap;z-index:10000;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:7px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--text);color:#fff;padding:10px 18px;border-radius:30px;font-size:12px;font-weight:600;white-space:nowrap;z-index:200;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:7px;}
 .toast-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.error .toast-dot{background:var(--red);}
@@ -340,10 +340,10 @@ main{
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── PAYMENT OVERLAY ───────────────────────────────────────── */
-.pay-overlay{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
+.pay-overlay{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
 .pay-overlay.open{transform:translateX(0);}
 
-.pay-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10000;box-shadow:var(--shadow);}
+.pay-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;box-shadow:var(--shadow);}
 .pay-back{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
 .pay-back:hover{border-color:var(--orange);background:var(--orange-light);}
 .pay-back svg{width:16px;height:16px;color:var(--text-2);}
@@ -524,57 +524,6 @@ main{
     color:var(--orange);
   }
 
-}
-/* --- Laptop UI Typography Scaling (Screens > 1024px) --- */
-@media (min-width: 1024px) {
-  /* Global Body Font Scale */
-  body {
-    font-size: 16px; 
-  }
-
-  /* Header scaling */
-  .logo-text { font-size: 24px; }
-  .header-link { font-size: 15px; padding: 10px 16px; }
-
-  /* Card and Section Titles */
-  .card-title { 
-    font-size: 18px !important; 
-  }
-  
-  /* Location and File Info */
-  .loc-name { font-size: 17px; }
-  .loc-label { font-size: 12px; }
-  .file-name { font-size: 15px; }
-  .file-meta { font-size: 13px; }
-
-  /* Print Mode & Paper Size Cards */
-  .mode-name { font-size: 16px; }
-  .mode-price { font-size: 13px; }
-  .mode-emoji { font-size: 24px; }
-
-  /* Copies Control */
-  .copies-num { font-size: 36px; }
-  .copies-lbl { font-size: 14px; }
-  .copies-input { 
-    height: 50px; 
-    font-size: 20px; 
-    width: 160px; 
-  }
-
-  /* Total Cost Display */
-  .cost-label { font-size: 15px; }
-  .cost-value { font-size: 64px !important; }
-  .cost-unit { font-size: 20px; }
-  .cost-breakdown { font-size: 14px; padding: 12px; }
-
-  /* Buttons */
-  .btn-pay { font-size: 18px; padding: 18px 30px; }
-  .btn-clear { font-size: 16px; }
-
-  /* Payment Overlay specific scaling */
-  .pay-header-title { font-size: 22px; }
-  .pay-step-text { font-size: 15px; }
-  .txn-input { font-size: 18px; padding: 16px; }
 }
 </style>
 </head>
@@ -1383,33 +1332,22 @@ function confirmPaperProceed(){
   openPayment();
 }
 
-function copyNumber(id) {
+function copyNumber(id){
+
   const num = document.getElementById(id).textContent;
 
-  // Use the modern Clipboard API
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(num).then(() => {
-      showToast("✓ Number copied to clipboard!");
-    }).catch(err => {
-      fallbackCopy(num);
-    });
-  } else {
-    fallbackCopy(num);
+  try{
+      const temp = document.createElement("input");
+      temp.value = num;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      document.body.removeChild(temp);
+  }catch(e){
+      console.log("Copy failed",e);
   }
-}
 
-function fallbackCopy(text) {
-  try {
-    const temp = document.createElement("input");
-    temp.value = text;
-    document.body.appendChild(temp);
-    temp.select();
-    document.execCommand("copy");
-    document.body.removeChild(temp);
-    showToast("✓ Number copied to clipboard!");
-  } catch(e) {
-    showToast("Copy failed. Please copy manually.", true);
-  }
+  showToast("Successfully copied!");
 }
 const copiesInput = document.getElementById("copiesInput");
 
