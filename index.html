@@ -329,7 +329,7 @@ main{
 .modal-close:hover{background:var(--orange-dark);}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--text);color:#fff;padding:10px 18px;border-radius:30px;font-size:12px;font-weight:600;white-space:nowrap;z-index:200;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:7px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--text);color:#fff;padding:10px 18px;border-radius:30px;font-size:12px;font-weight:600;white-space:nowrap;z-index:10000;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:7px;}
 .toast-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.error .toast-dot{background:var(--red);}
@@ -343,7 +343,7 @@ main{
 .pay-overlay{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
 .pay-overlay.open{transform:translateX(0);}
 
-.pay-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;box-shadow:var(--shadow);}
+.pay-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10000;box-shadow:var(--shadow);}
 .pay-back{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
 .pay-back:hover{border-color:var(--orange);background:var(--orange-light);}
 .pay-back svg{width:16px;height:16px;color:var(--text-2);}
@@ -1332,10 +1332,10 @@ function confirmPaperProceed(){
   openPayment();
 }
 
-function copyNumber(id){
+function copyNumber(id) {
   const num = document.getElementById(id).textContent;
 
-  // Use modern Clipboard API
+  // Use the modern Clipboard API
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(num).then(() => {
       showToast("✓ Number copied to clipboard!");
@@ -1347,7 +1347,6 @@ function copyNumber(id){
   }
 }
 
-// Keep this helper function below copyNumber
 function fallbackCopy(text) {
   try {
     const temp = document.createElement("input");
