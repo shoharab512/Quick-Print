@@ -94,10 +94,6 @@ main{
 /* Laptop screens */
 @media (min-width:900px){
 
-  .page{
-    max-width:1100px;
-  }
-
   main{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -212,8 +208,8 @@ main{
   100%{box-shadow:0 0 0 0 rgba(244,124,32,0);}
 }
 
-.copies-input{
-  animation:hintPulse 1.2s ease 1;
+.copies-input.hint{
+  animation:hintPulse 1.2s ease;
 }
 
 /* UPLOAD */
@@ -1266,7 +1262,9 @@ window.addEventListener("load", () => {
 
   const input = document.getElementById("copiesInput");
 
-  input.focus({ preventScroll: true });
+  input.focus({ preventScroll:true });
+
+  input.classList.add("hint");
 
 });
 </script>
