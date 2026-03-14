@@ -99,7 +99,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       </button>
     </div>
   </div>
-  <div class="back-link"><a href="quickprint2.html">← Back to QuickPrint</a></div>
+  <div class="back-link"><a href="index.html">← Back to QuickPrint</a></div>
 </div>
 
 <script>
@@ -141,7 +141,7 @@ async function doLogin() {
     localStorage.setItem('qp_credits', data.credits);
     localStorage.setItem('qp_is_admin', data.is_admin);
     showAlert('Welcome back, ' + data.name + '! Redirecting...', 'success');
-    setTimeout(() => { window.location.href = data.is_admin ? 'Admin.html' : 'quickprint2.html'; }, 1000);
+    setTimeout(() => { window.location.href = data.is_admin ? 'Admin.html' : 'index.html'; }, 1000);
   } catch(e) {
     showAlert('Could not connect to server. Try again.');
   } finally {
@@ -171,7 +171,7 @@ async function doRegister() {
     localStorage.setItem('qp_credits', data.credits);
     localStorage.setItem('qp_is_admin', false);
     showAlert('Account created! Welcome, ' + data.name + '!', 'success');
-    setTimeout(() => { window.location.href = 'quickprint2.html'; }, 1000);
+    setTimeout(() => { window.location.href = 'index.html'; }, 1000);
   } catch(e) {
     showAlert('Could not connect to server. Try again.');
   } finally {
@@ -189,7 +189,7 @@ document.addEventListener('keydown', e => {
 
 // Auto-redirect if already logged in
 if (localStorage.getItem('qp_token')) {
-  window.location.href = 'quickprint2.html';
+  window.location.href = 'index.html';
 }
 </script>
 </body>
