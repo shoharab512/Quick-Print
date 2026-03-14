@@ -208,6 +208,12 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
 .modal-overlay.open .modal{transform:translateY(0);}
 .modal-handle{width:36px;height:4px;background:var(--border-2);border-radius:2px;margin:0 auto 18px;}
 .modal-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:14px;}
+#locationSearch{
+  position:sticky;
+  top:0;
+  background:white;
+  z-index:2;
+}
 .location-options{display:flex;flex-direction:column;gap:8px;}
 .loc-option{display:flex;align-items:center;gap:12px;padding:13px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.15s;}
 .loc-option:hover{border-color:var(--orange-mid);background:var(--orange-light);}
@@ -570,6 +576,31 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">Select Printer Location</div>
+    <div style="position:relative;margin-bottom:10px;">
+  <input
+    type="text"
+    id="locationSearch"
+    placeholder="Search printer location..."
+    oninput="searchLocation()"
+    style="
+      width:100%;
+      padding:10px 12px 10px 32px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      font-size:13px;
+      outline:none;
+    "
+  >
+  <span style="
+      position:absolute;
+      left:10px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:14px;
+      color:var(--text-3);
+  ">🔍</span>
+</div>
+    
     <div class="location-options">
       <div class="loc-option selected" onclick="selectLocation(this,'Zia Hall (Ground Floor)','🏠')">
         <div class="loc-opt-emoji">🏠</div>
@@ -1008,8 +1039,25 @@ function resetAll(){
   document.getElementById('payOverlay').classList.remove('open');
   clearAll();
 }
-function openLocationModal(){document.getElementById('locationModal').classList.add('open');}
-function closeLocationModal(){document.getElementById('locationModal').classList.remove('open');}
+function openLocationModal(){
+  document.getElementById('locationModal').classList.add('open');
+
+  setTimeout(()=>{
+    document.getElementById('locationSearch').focus();
+  },200);
+}
+function closeLocationModal(){
+
+  document.getElementById('locationModal').classList.remove('open');
+
+  const input = document.getElementById("locationSearch");
+  input.value = "";
+
+  document.querySelectorAll(".loc-option").forEach(opt=>{
+    opt.style.display = "flex";
+  });
+
+}
 function handleOverlayClick(e){if(e.target.id==='locationModal')closeLocationModal();}
 function selectLocation(el,name,emoji){
   document.querySelectorAll('.loc-option').forEach(o=>o.classList.remove('selected'));
@@ -1017,6 +1065,25 @@ function selectLocation(el,name,emoji){
   document.getElementById('locationName').textContent=name;
   document.getElementById('locEmoji').textContent=emoji;
   setTimeout(closeLocationModal,200);
+}
+function searchLocation(){
+
+  const query = document.getElementById("locationSearch").value.toLowerCase();
+
+  const options = document.querySelectorAll(".loc-option");
+
+  options.forEach(opt => {
+
+    const name = opt.querySelector(".loc-opt-name").textContent.toLowerCase();
+
+    if(name.includes(query)){
+      opt.style.display = "flex";
+    }else{
+      opt.style.display = "none";
+    }
+
+  });
+
 }
 function showToast(msg,isError){
   const t=document.getElementById('toast');
