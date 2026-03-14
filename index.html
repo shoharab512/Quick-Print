@@ -116,7 +116,22 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
 .copies-center{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:7px 0;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);}
 .copies-num{font-size:26px;font-weight:800;color:var(--orange);}
 .copies-lbl{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;}
-.copies-input{width:100px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--white);font-family:var(--mono);font-size:14px;font-weight:500;text-align:center;color:var(--text);outline:none;transition:all 0.15s;-moz-appearance:textfield;}
+.copies-input{
+  width:100px;
+  flex-shrink:0;
+  height:38px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--white);
+  font-family:var(--mono);
+  font-size:14px;
+  font-weight:500;
+  text-align:center;
+  color:var(--text);
+  outline:none;
+  transition:all 0.15s;
+  -moz-appearance:textfield;
+}
 .copies-input::-webkit-outer-spin-button,.copies-input::-webkit-inner-spin-button{-webkit-appearance:none;}
 .copies-input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(244,124,32,0.12);}
 
@@ -508,7 +523,7 @@ main{padding:14px;display:flex;flex-direction:column;gap:10px;}
             <span class="copies-lbl">Copies</span>
           </div>
           <button class="copies-btn" onclick="changeCopies(1)">+</button>
-          <input type="number" id="copiesInput" class="copies-input" value="1" min="1" max="999" placeholder="No." oninput="setCopiesDirect(this.value)"/>
+          <input type="text" id="copiesInput" class="copies-input" value="1" placeholder="1–999" oninput="setCopiesDirect(this.value.replace(/[^0-9]/g,''))"/>
         </div>
       </div>
     </div>
@@ -867,8 +882,16 @@ function changeCopies(delta){
   updateTotals();
 }
 function setCopiesDirect(val){
-  const n=parseInt(val);
-  if (!isNaN(n)&&n>=1&&n<=999){copies=n;document.getElementById('copiesValue').textContent=copies;updateTotals();}
+
+  const n = parseInt(val);
+
+  if(!isNaN(n)){
+      copies = Math.min(999, Math.max(1, n));
+      document.getElementById('copiesValue').textContent = copies;
+      document.getElementById('copiesInput').value = copies;
+      updateTotals();
+  }
+
 }
 /* ── PAYMENT CONFIG ─────────────────────────────────────────
    Replace these numbers with your actual merchant numbers.
