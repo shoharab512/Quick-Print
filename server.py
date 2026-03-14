@@ -54,9 +54,9 @@ def extract_txn_id(message: str) -> Optional[str]:
             return match.group(1).upper()
     return None
 
-def extract_amount(message: str) -> Optional[str]:
+def extract_amount(message: str) -> Optional[float]:
     match = re.search(AMOUNT_PATTERN, message, re.IGNORECASE)
-    return match.group(1).replace(",", "") if match else None
+    return float(match.group(1).replace(",", "")) if match else None
 
 def detect_method(sender: str, message: str) -> str:
     combined = (sender + message).lower()
@@ -155,8 +155,12 @@ async def verify_payment(payload: VerifyPayload):
         raise HTTPException(status_code=404, detail="Transaction not found")
     if txn["used"]:
         raise HTTPException(status_code=409, detail="Transaction already used")
-    if txn["amount"] and float(txn["amount"]) < payload.amount:
-        raise HTTPException(status_code=400, detail="Amount mismatch")
+    if txn["amount"] is None:
+        raise HTTPException(status_code=400, detail="Could not extract amount from SMS")
+    sms_amount = txn["amount"]
+    order_amount = float(payload.amount)
+    if sms_amount != order_amount:
+        raise HTTPException(status_code=400, detail=f"Amount mismatch: SMS={sms_amount} TK, Order={order_amount} TK")
     transaction_store[payload.txnId.upper()]["used"] = True
     return {"ok": True, "verified": True, "txn": txn}
 
