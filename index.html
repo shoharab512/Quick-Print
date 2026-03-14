@@ -37,7 +37,16 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  font-size:18px; /* increase base font */
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
 .page{
   width:100%;
   max-width:520px;
@@ -524,6 +533,27 @@ main{
     color:var(--orange);
   }
 
+}
+.card-title{
+  font-size:16px;
+}
+
+.mode-name{
+  font-size:16px;
+}
+
+.upload-zone-title{
+  font-size:18px;
+}
+
+.cost-value{
+  font-size:60px;
+}
+/* Laptop font scaling */
+@media (min-width:900px){
+  body{
+    font-size:19px;
+  }
 }
 </style>
 </head>
