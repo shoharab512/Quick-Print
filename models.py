@@ -4,6 +4,7 @@ from datetime import datetime
 
 Base = declarative_base()
 
+
 class User(Base):
 
     __tablename__ = "users"
@@ -26,4 +27,18 @@ class CreditTransaction(Base):
     type = Column(String)
     method = Column(String)
     txn_id = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Order(Base):
+
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+    files = Column(Integer)
+    pages = Column(Integer)
+    copies = Column(Integer)
+    amount = Column(Float)
+    status = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
